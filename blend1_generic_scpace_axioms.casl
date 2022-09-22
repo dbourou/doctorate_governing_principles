@@ -1,0 +1,36 @@
+%( generic space of I <- G -> J in first blend )%
+
+spec G = 
+
+sorts
+	Point_Grade
+
+ops
+	c8_gr1, c7_gr2, c_6_gr2, c5_gr2, c4_gr3, c3_gr3, c2_gr3, c1_gr4 : Point_Grade  %( 8 constants )%
+
+preds
+	more_backPP, more_leftBackPP, more_rightBackPP: Point_Grade
+
+%axioms%	
+
+	.c1_gr4 more_rightBackPP c2_gr3
+	.c1_gr4 more_leftBackPP c4_gr3
+	.c1_gr4 more_backPP c3_gr3
+
+	.c3_gr3 more_rightBackPP c5_gr2
+	.c4_gr3 more_rightBackPP c5_gr2
+	.c4_gr3 more_rightBackPP c6_gr2
+	.c2_gr3 more_leftBackPP c6_gr2
+	.c2_gr3 more_leftBackPP c7_gr2
+	.c3_gr3 more_leftBackPP c7_gr2
+	.c2_gr3 more_backPP c5_gr2
+	.c3_gr3 more_backPP c6_gr2
+	.c4_gr3 more_backPP c7_gr2
+
+	.c7_gr2 more_rightBackPP c8_gr1
+	.c5_gr2 more_leftBackPP c8_gr1
+	.c6_gr2 more_backPP c8_gr1
+
+%( generic space of I_0 <- G_0 -> J in first blend )%
+
+should be the same (make sure the code is correct)

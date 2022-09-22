@@ -1,0 +1,133 @@
+
+%( GENERIC AND INPUT SPACES INTEGRATION )%
+
+
+spec J_e =
+
+sorts 
+	Grade
+	%( ScaleSchema sort corresponds to the entire configuration defined 
+	in the specification, i.e., the image schema gestalt )%
+
+ops
+	
+	gr_1, gr_2, gr_3, gr_4: Grade
+	%( instantiate four Grades )%
+
+preds
+	
+	more: Grade * Grade
+	%( predicates specifying that a Grade is "more" or less" than 
+	another one on the ScaleSchema )%
+
+
+%axioms% 
+	
+	forall x,y,z: Grade
+
+    	. not more(x,x)				%( irreflexive )%
+    	. more(x,y) /\ more(y,z) => more(x,z)	%( transitive )%
+		. more(x,y) => not more(y,x) %( asymmetry )%
+
+	.more(gr_4,gr_3) .more(gr_3,gr_2) .more(gr_2,gr_1)
+	%( declare which Grade is "more" than which )%
+
+end 
+
+
+
+
+%( Specification of the generalized geometric configuration )%
+
+
+
+spec I_e =
+	sorts Point
+	%( here the sorts needed are a Point and a Line )%
+
+ops
+	
+	c_1, c_2, c_3, c_4,
+	c_5, c_6, c_7, c_8: Point
+	%( instantiate eight points )%
+
+
+preds
+
+
+	__backPP__,__leftBackPP__,__rightBackPP__ : Point * Point
+
+%axioms%
+
+	.c_1 rightBackPP c_2
+	.c_1 rightBackPP c_5
+	.c_5 leftBackPP c_8
+
+	.c_1 backPP c_8
+	.c_2 backPP c_5
+
+	.c_3 rightBackPP c_5
+	.c_4 rightBackPP c_5
+	.c_4 rightBackPP c_6
+	.c_4 rightBackPP c_8
+	.c_7 rightBackPP c_8
+
+	.c_1 leftBackPP c_4
+	.c_1 leftBackPP c_7
+	.c_2 leftBackPP c_6 
+	.c_2 leftBackPP c_7
+	.c_2 leftBackPP c_8 
+	.c_3 leftBackPP c_7
+
+	.c_1 backPP c_3
+	.c_1 backPP c_6
+	.c_3 backPP c_6
+	.c_3 backPP c_8
+	.c_4 backPP c_7
+	.c_6 backPP c_8 
+
+
+end
+
+
+
+
+
+
+
+%(GENERIC SPACES)%
+
+
+spec G_e =
+
+sort Degree
+
+ops
+	deg_1, deg_2a, deg_2b, deg_2c,
+	deg_3a, deg_3b, deg_3c, deg_4: Degree
+
+pred
+	higher_deg1, higher_deg2, higher_deg3: Degree * Degree
+
+
+view GeJ : G_e to J_e = 
+	Degree |-> Grade, deg_1 |-> gr_1, 
+	deg_3a |-> gr_2, deg_3b |-> gr_2, deg_3c |-> gr_2, 
+	deg_2a |-> gr_3, deg_2b |-> gr_3, deg_2c |-> gr_3, 
+	deg_4 |-> gr_4,
+	higher_deg1 |-> more, higher_deg2 |-> more, higher_deg3|-> more
+
+view GeI : G_e to I_e =
+	Degree |-> Point, 
+	deg_4 |-> c_1, 
+	deg_3a |-> c_2, deg_3b |-> c_3, deg_3c |-> c_4, 
+	deg_2a |-> c_5, deg_2b |-> c_6, deg_2c |-> c_7, 
+	deg_1 |-> c_8,
+	higher_deg1 |-> __backPP__, higher_deg2 |-> __leftBackPP__, 
+	higher_deg3|-> __rightBackPP__
+
+
+
+spec BLEND_Ve = combine GeJ, GeI
+
+

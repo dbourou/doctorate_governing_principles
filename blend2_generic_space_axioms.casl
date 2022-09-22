@@ -1,0 +1,106 @@
+%( the specification of G of the ultracompressed blend
+has the same contents of the product IxJ except predicates
+that map to pred leftPP, and related axioms )%
+
+%( the specification of G_0 of the ultracompressed blend
+has the same contents of the product IxJ except predicates
+that map to pred leftPP and rightPP, and related axioms )%
+
+
+spec G = 
+
+sorts
+	Point_Grade, Line_Grade, Point_ScaleSchema, Line_ScaleSchema, Point_Scale, Line_Scale
+
+ops
+	c_1_gr1, c_1_gr2, c_1_gr3, c_1_gr4, ..., c_8_gr1, c_8_gr2, c_8_gr3, c_8_gr4 : Point_Grade  %( 32 constants )%
+	r_21_gr1, r_21_gr2, r_21_gr3, r_21_gr4, ..., r_87_gr1,  r_87_gr2, r_87_gr3, r_87_gr4 : Line_Grade  %( 48 constants )%
+	c_1_scsc, ..., c_8_scsc : Point_ScaleSchema  %( 8 constants )%
+	r_21_scsc, ..., r_87_scsc : Line_ScaleSchema  %( 12 constants )%
+	c_1_a_scale, ..., c_8_a_scale : Point_Scale  %( 8 constants )%
+	r_21_a_scale, ..., r_87_a_scale : Line_Scale  %( 12 constants )%
+
+preds
+	intersectLL_inScale, backLL_inScale, ..., rightFrontLL_inScale : Line_Grade * Line_Scale  %( 9 predicates )%
+	intersectLP_inScale, backLP_inScale, ..., rightFrontLP_inScale : Line_Grade * Point_Scale %( 9 predicates )%
+	intersectPP_inScale, backPP_inScale, ..., rightFrontPP_inScale : Point_Grade * Point_Scale %( 8 predicates )%
+	intersectLL_more, backLL_more,..., rightFrontLL_more : Line_Grade * Line_Grade  %( 9 predicates )%
+	intersectLP_more, backLP_more, ..., rightFrontLP_more : Line_Grade * Point_Grade  %( 9 predicates )%
+	intersectPP_more, backPP_more, ..., rightFrontPP_more : Point_Grade * Point_Grade  %( 8 predicates )%
+	intersectLL_less, backLL_less,..., rightFrontLL_less : Line_Grade * Line_Grade  %( 9 predicates )%
+	intersectLP_less, backLP_less, ..., rightFrontLP_less : Line_Grade * Point_Grade  %( 9 predicates )%
+	intersectPP_less, backPP_less, ..., rightFrontPP_less : Point_Grade * Point_Grade  %( 8 predicates )%
+
+%axioms%	
+	%( 50 geometrical axioms with Point * Point and 4 'inScale' axioms with Grade * Scale yield 200 hybrid axioms )%
+	.intersectLL_inScale(r_53_gr1,r_62_a_scale)
+	.intersectLL_inScale(r_64_gr1,r_73_a_scale)
+	.intersectLL_inScale(r_53_gr2,r_62_a_scale)
+	.intersectLL_inScale(r_64_gr2,r_73_a_scale)
+	...
+
+	%( 50 geometrical axioms with Point * Point and 3 'more' axioms with Grade * Grade yield 150 hybrid axioms )%
+
+	%( 24 geometrical axioms with Line * Point and 4 'inScale' axioms with Grade * Scale yield 96 hybrid axioms )%
+
+	%( 24 geometrical axioms with Line * Point and 3 'more' axioms with Grade * Grade yield 72 hybrid axioms )%
+
+	%( 2 geometrical axioms with Line * Line and 4 'inScale' axioms with Grade * Scale yield 8 hybrid axioms )%
+
+	%( 2 geometrical axioms with Line * Line and 3 'more' axioms with Grade * Grade yield 6 hybrid axioms )%
+
+
+%( I don't think you can put more axioms in the product than those that are not quantified, because all axioms of I_0 are propositional (without variables and quantification )%
+
+end
+
+
+
+
+spec G_0 = 
+
+sorts
+	Point_Grade, Line_Grade, Point_ScaleSchema, Line_ScaleSchema, Point_Scale, Line_Scale
+
+ops
+	c_1_gr1, c_1_gr2, c_1_gr3, c_1_gr4, ..., c_8_gr1, c_8_gr2, c_8_gr3, c_8_gr4 : Point_Grade  %( 32 constants )%
+	r_21_gr1, r_21_gr2, r_21_gr3, r_21_gr4, ..., r_87_gr1,  r_87_gr2, r_87_gr3, r_87_gr4 : Line_Grade  %( 48 constants )%
+	c_1_scsc, ..., c_8_scsc : Point_ScaleSchema  %( 8 constants )%
+	r_21_scsc, ..., r_87_scsc : Line_ScaleSchema  %( 12 constants )%
+	c_1_a_scale, ..., c_8_a_scale : Point_Scale  %( 8 constants )%
+	r_21_a_scale, ..., r_87_a_scale : Line_Scale  %( 12 constants )%
+
+preds
+	intersectLL_inScale, backLL_inScale, ..., rightFrontLL_inScale : Line_Grade * Line_Scale  %( 9 predicates )%
+	intersectLP_inScale, backLP_inScale, ..., rightFrontLP_inScale : Line_Grade * Point_Scale %( 9 predicates )%
+	intersectPP_inScale, backPP_inScale, ..., rightFrontPP_inScale : Point_Grade * Point_Scale %( 7 predicates )%
+	intersectLL_more, backLL_more,..., rightFrontLL_more : Line_Grade * Line_Grade  %( 9 predicates )%
+	intersectLP_more, backLP_more, ..., rightFrontLP_more : Line_Grade * Point_Grade  %( 9 predicates )%
+	intersectPP_more, backPP_more, ..., rightFrontPP_more : Point_Grade * Point_Grade  %( 7 predicates )%
+	intersectLL_less, backLL_less,..., rightFrontLL_less : Line_Grade * Line_Grade  %( 9 predicates )%
+	intersectLP_less, backLP_less, ..., rightFrontLP_less : Line_Grade * Point_Grade  %( 9 predicates )%
+	intersectPP_less, backPP_less, ..., rightFrontPP_less : Point_Grade * Point_Grade  %( 7 predicates )%
+
+%axioms%	
+	%( 44 geometrical axioms with Point * Point and 4 'inScale' axioms with Grade * Scale yield 176 hybrid axioms )%
+	.intersectLL_inScale(r_53_gr1,r_62_a_scale)
+	.intersectLL_inScale(r_64_gr1,r_73_a_scale)
+	.intersectLL_inScale(r_53_gr2,r_62_a_scale)
+	.intersectLL_inScale(r_64_gr2,r_73_a_scale)
+	...
+
+	%( 44 geometrical axioms with Point * Point and 3 'more' axioms with Grade * Grade yield 132 hybrid axioms )%
+
+	%( 24 geometrical axioms with Line * Point and 4 'inScale' axioms with Grade * Scale yield 96 hybrid axioms )%
+
+	%( 24 geometrical axioms with Line * Point and 3 'more' axioms with Grade * Grade yield 72 hybrid axioms )%
+
+	%( 2 geometrical axioms with Line * Line and 4 'inScale' axioms with Grade * Scale yield 8 hybrid axioms )%
+
+	%( 2 geometrical axioms with Line * Line and 3 'more' axioms with Grade * Grade yield 6 hybrid axioms )%
+
+
+%( I don't think you can put more axioms in the product than those that are not quantified, because all axioms of I_0 are propositional (without variables and quantification )%
+
+end
+

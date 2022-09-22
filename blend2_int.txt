@@ -1,0 +1,482 @@
+
+
+%( SPAN Ve - to compute INTEGRATION )%
+
+%( G and J are the same, although I could remove operations from J I guess )%
+
+
+spec I_e = 
+
+sorts Point, Line
+
+ops
+	c_1, c_2, c_3, c_4,
+	c_5, c_6, c_7, c_8: Point
+	%( instantiate eight points )%
+
+	r_21, r_52, r_85: Line
+	%( instantiate twelve Lines )%
+	r_31, r_41, r_53, r_62, r_64, 
+	r_73, r_74, r_86, r_87: Line
+	%( instantiate twelve Lines )%
+
+preds
+	%( the "intersect" predicate is defined on pairs of Points, pairs of Lines, or a Point and a Line )%
+	intersectLL: Line * Line
+
+	%( these predicates are defined on pairs of Lines, pairs of Points, 
+	or a Line and a Point, and they express relative position )%
+
+	__backLL__,__frontLL__,__leftLL__,__leftBackLL__,__leftFrontLL__,
+	__rightLL__,__rightBackLL__,__rightFrontLL__  : Line * Line
+
+	intersectLP: Line * Point
+	intersectPP: Point * Point
+
+	%( these predicates are defined on pairs of Lines, pairs of Points, 
+	or a Line and a Point, and they express relative position )%
+
+	__backPP__,__frontPP__,__leftPP__,__leftBackPP__,__leftFrontPP__,
+	__rightPP__,__rightBackPP__,__rightFrontPP__,__rightPP__  : Point * Point
+
+	__backLP__,__frontLP__,__leftLP__,__leftBackLP__,__leftFrontLP__,
+	__rightLP__,__rightBackLP__,__rightFrontLP__,__rightLP__,__leftLP__ : Line * Point
+
+
+%axioms%
+
+
+	%( describe the precise relative positions of all pairs of instantiated Points )%
+	.c_1 rightBackPP c_2 .c_2 leftFrontPP c_1 
+	.c_1 rightBackPP c_5 .c_5 leftFrontPP c_1
+	.c_5 leftBackPP c_8 .c_8 rightFrontPP c_5 
+
+	.c_1 backPP c_8 .c_8 frontPP c_1
+	.c_2 backPP c_5 .c_5 frontPP c_2
+
+	%( describe the precise topological relation - here, intersection - 
+	of Lines with Points and lines with lines )%
+	.intersectLP(r_21,c_1) .intersectLP(r_21,c_2) 
+	.intersectLP(r_52,c_2) .intersectLP(r_52,c_5) 
+	.intersectLP(r_85,c_5) .intersectLP(r_85,c_8) 
+
+	%( describe the precise relative positions of all pairs of instantiated Points )%
+	.c_3 rightBackPP c_5 .c_5 leftFrontPP c_3 
+	.c_4 rightBackPP c_5 .c_5 leftFrontPP c_4 
+	.c_4 rightBackPP c_6 .c_6 leftFrontPP c_4 
+	.c_4 rightBackPP c_8 .c_8 leftFrontPP c_4 
+	.c_7 rightBackPP c_8 .c_8 leftFrontPP c_7 
+
+	.c_1 leftBackPP c_4 .c_4 rightFrontPP c_1 
+	.c_1 leftBackPP c_7 .c_7 rightFrontPP c_1 
+	.c_2 leftBackPP c_6 .c_6 rightFrontPP c_2 
+	.c_2 leftBackPP c_7 .c_7 rightFrontPP c_2 
+	.c_2 leftBackPP c_8 .c_8 rightFrontPP c_2 
+	.c_3 leftBackPP c_7 .c_7 rightFrontPP c_3 
+
+	.c_1 backPP c_3 .c_3 frontPP c_1 
+	.c_1 backPP c_6 .c_6 frontPP c_1 .c_3 rightPP c_2 
+	.c_4 rightPP c_2 
+	.c_4 rightPP c_3 
+	.c_3 backPP c_6 .c_6 frontPP c_3 .c_6 rightPP c_5 
+	.c_3 backPP c_8 .c_8 frontPP c_3 .c_7 rightPP c_5 
+	.c_4 backPP c_7 .c_7 frontPP c_4 .c_7 rightPP c_6 
+	.c_6 backPP c_8 .c_8 frontPP c_6 
+
+	%( describe the precise topological relation - here, intersection - 
+	of Lines with Points and lines with lines )%
+	.intersectLP(r_31,c_1) .intersectLP(r_31,c_3)
+	.intersectLP(r_41,c_1) .intersectLP(r_41,c_4)
+	.intersectLP(r_53,c_3) .intersectLP(r_53,c_5)
+	.intersectLP(r_62,c_2) .intersectLP(r_62,c_6) 
+	.intersectLP(r_64,c_4) .intersectLP(r_64,c_6)
+	.intersectLP(r_73,c_3) .intersectLP(r_73,c_7)
+	.intersectLP(r_74,c_4) .intersectLP(r_74,c_7) 
+	.intersectLP(r_86,c_6) .intersectLP(r_86,c_8)
+	.intersectLP(r_87,c_7) .intersectLP(r_87,c_8) 
+
+	.intersectLL(r_53,r_62) .intersectLL(r_64,r_73)
+
+end
+
+
+spec J =
+
+sorts 
+	Grade, ScaleSchema, Scale
+	%( ScaleSchema sort corresponds to the entire configuration defined 
+	in the specification, i.e., the image schema gestalt )%
+
+op   scale : ScaleSchema -> Scale
+
+	scsc: ScaleSchema
+
+	a_scale: Scale
+	%( instantiate a ScaleSchema and a Scale )%
+	
+	gr_1, gr_2, gr_3, gr_4: Grade
+	%( instantiate four Grades )%
+
+preds
+	
+	inScale: Grade * Scale
+	%( predicate specifying that a Grade is "in" a Scale )%
+
+	more, less: Grade * Grade
+	%( predicates specifying that a Grade is "more" or less" than 
+	another one on the ScaleSchema )%
+
+
+%axioms% 
+	
+	forall s: ScaleSchema; x,y,z: Grade
+
+    	. forall c:Scale
+    	%( scales are always part of a unique SCALARITY schema )%
+    	. exists! sc:ScaleSchema . scale(sc) = c
+
+    	%( distinct grades of a scale are comparable )%
+    	. inScale(x,scale(s)) /\ inScale(y,scale(s)) /\ not x = y
+    	=> more(x,y) \/ more(y,x)
+
+    	%( two comparable grades are on the same scale of a SCALARITY schema )%
+    	. more(x,y) => exists! sc:ScaleSchema
+    	. inScale(x,scale(sc)) /\ inScale(y,scale(sc))
+     
+    	%( less is the inverse of more )%
+    	. less(x,y) <=> more(y,x)
+
+		%( ''more'' has the properties of a total order )%
+
+    	. not more(x,x)				%( irreflexive )%
+    	. more(x,y) /\ more(y,z) => more(x,z)	%( transitive )%
+		. more(x,y) => not more(y,x) %( asymmetry )%
+
+
+	.scale(scsc)=a_scale
+	.inScale(gr_1,a_scale) .inScale(gr_2,a_scale)
+	.inScale(gr_3,a_scale) .inScale(gr_4,a_scale)
+	%( declare that the four instantiated Grades are 
+	in the instantiated ScaleSchema )%
+
+	.more(gr_4,gr_3) .more(gr_3,gr_2) .more(gr_2,gr_1)
+	%( declare which Grade is "more" than which )%
+
+end
+
+
+%( GENERI  SPACES FOR G_e )%
+
+
+spec GENERIC_1_e =
+
+sort SortPG, SortPSch, SortPSc, SortLG, SortLSch, SortLSc
+	
+ops
+	c1, c2, c3, c4, c5, c6, c7, c8, 
+	c9, c10, c11, c12, c13, c14, c15, c16, 
+	c17, c18, c19, c20, c21, c22, c23, c24, 
+	c25, c26, c27, c28, c29, c30, c31, c32 : SortPG
+
+	c33, c34, c35, c36, c37, c38, c39, c40 : SortPSch
+	c41, c42, c43, c44, c45, c46, c47, c48 : SortPSc
+	
+	c49, c50, c51, c52, c53, c54, c55, c56, c57, c58, c59, c60, 
+	c61, c62, c63, c64, c65, c66, c67, c68, c69, c70, c71, c72, 
+	c73, c74, c75, c76, c77, c78, c79, c80, c81, c82, c83, c84, 
+	c85, c86, c87, c88, c89, c90, c91, c92, c93, c94, c95, c96 : SortLG
+
+	c97, c98, c99, c100, c101, c102, c103, c104, c105, c106, c107, c108 : SortLSch
+
+	c109, c110, c111, c112, c113, c114, c115, c116, c117, c118, c119, c120 : SortLSc
+
+
+
+view 1b_e : GENERIC_1_e to I_e = 
+
+SortPG |-> Point,
+SortPSch |-> Point, 
+SortPSc |-> Point, 
+SortLG |-> Line, 
+SortLSch |-> Line, 
+SortLSc |-> Line,
+	
+	c1 |-> c_1, c2 |-> c_2, c3 |-> c_3, c4 |-> c_4, 
+	c5 |-> c_5, c6 |-> c_6, c7 |-> c_7, c8 |-> c_8, 
+	c9 |-> c_1, c10 |-> c_2, c11 |-> c_3, c12 |-> c_4, 
+	c13 |-> c_5, c14 |-> c_6, c15 |-> c_7, c16 |-> c_8, 
+	c17 |-> c_1, c18 |-> c_2, c19 |-> c_3, c20 |-> c_4, 
+	c21 |-> c_5, c22 |-> c_6, c23 |-> c_7, c24 |-> c_8, 
+	c25 |-> c_1, c26 |-> c_2, c27 |-> c_3, c28 |-> c_4, 
+	c29 |-> c_5, c30 |-> c_6, c31 |-> c_7, c32 |-> c_8,
+
+	c33 |-> c_1, c34 |-> c_2, c35 |-> c_3, c36 |-> c_4, c37 |-> c_5, c38 |-> c_6, c39 |-> c_7, c40 |-> c_8,
+	c41 |-> c_1, c42 |-> c_2, c43 |-> c_3, c44 |-> c_4, c45 |-> c_5, c46 |-> c_6, c47 |-> c_7, c48 |-> c_8,
+	
+	c49 |-> r_21, c50 |-> r_31, c51 |-> r_41, c52 |-> r_52,  c53 |-> r_53,  c54 |-> r_62,
+	c55 |-> r_64,  c56 |-> r_73,  c57 |-> r_74,  c58 |-> r_85,  c59 |-> r_86,  c60 |-> r_87, 
+
+	c61 |-> r_21, c62 |-> r_31, c63 |-> r_41, c64 |-> r_52,  c65 |-> r_53,  c66 |-> r_62,
+	c67 |-> r_64,  c68 |-> r_73,  c69 |-> r_74,  c70 |-> r_85,  c71 |-> r_86,  c72 |-> r_87, 
+
+		c73 |-> r_21, c74 |-> r_31, c75 |-> r_41, c76 |-> r_52,  c77 |-> r_53,  c78 |-> r_62,
+	c79 |-> r_64,  c80 |-> r_73,  c81 |-> r_74,  c82 |-> r_85,  c83 |-> r_86,  c84 |-> r_87, 
+
+		c85 |-> r_21, c86 |-> r_31, c87 |-> r_41, c88 |-> r_52,  c89 |-> r_53,  c90 |-> r_62,
+	c91 |-> r_64,  c92 |-> r_73,  c93 |-> r_74,  c94 |-> r_85,  c95 |-> r_86,  c96 |-> r_87, 
+
+		c97 |-> r_21, c98 |-> r_31, c99 |-> r_41, c100 |-> r_52,  c101 |-> r_53,  c102 |-> r_62,
+	c103 |-> r_64,  c104 |-> r_73,  c105 |-> r_74,  c106 |-> r_85,  c107 |-> r_86,  c108 |-> r_87, 
+
+		c109 |-> r_21, c110 |-> r_31, c111 |-> r_41, c112 |-> r_52,  c113 |-> r_53,  c114 |-> r_62,
+	c115 |-> r_64,  c116 |-> r_73,  c117 |-> r_74,  c118 |-> r_85,  c119 |-> r_86,  c120 |-> r_87
+
+
+view 1c_e : GENERIC_1_e to J = 
+
+SortPG |-> Grade,
+SortPSch |-> ScaleSchema, 
+SortPSc |-> Scale, 
+SortLG |-> Grade, 
+SortLSch |-> ScaleSchema, 
+SortLSc |-> Scale, 
+	c1 |-> gr_1, c2 |-> gr_1, c3 |-> gr_1, c4 |-> gr_1, 
+	c5 |-> gr_1, c6 |-> gr_1, c7 |-> gr_1, c8 |-> gr_1, 
+	c9 |-> gr_2, c10 |-> gr_2, c11 |-> gr_2, c12 |-> gr_2, 
+	c13 |-> gr_2, c14 |-> gr_2, c15 |-> gr_2, c16 |-> gr_2, 
+	c17 |-> gr_3, c18 |-> gr_3, c19 |-> gr_3, c20 |-> gr_3, 
+	c21 |-> gr_3, c22 |-> gr_3, c23 |-> gr_3, c24 |-> gr_3, 
+	c25 |-> gr_4, c26 |-> gr_4, c27 |-> gr_4, c28 |-> gr_4, 
+	c29 |-> gr_4, c30 |-> gr_4, c31 |-> gr_4, c32 |-> gr_4,
+
+	c33 |-> scsc, c34 |-> scsc, c35 |-> scsc, c36 |-> scsc, c37 |-> scsc, c38 |-> scsc, c39 |-> scsc, c40 |-> scsc, %( sort PS )%
+	c41 |-> a_scale, c42 |-> a_scale, c43 |-> a_scale, c44 |-> a_scale, c45 |-> a_scale, 
+	c46 |-> a_scale, c47 |-> a_scale, c48 |-> a_scale, %( sort PP )%
+
+	c49 |-> gr_1, c50 |-> gr_1, c51 |-> gr_1, c52 |-> gr_1,  c53 |-> gr_1,  c54 |-> gr_1,
+	c55 |-> gr_1,  c56 |-> gr_1,  c57 |-> gr_1,  c58 |-> gr_1,  c59 |-> gr_1,  c60 |-> gr_1, 
+
+	c61 |-> gr_2, c62 |-> gr_2, c63 |-> gr_2, c64 |-> gr_2,  c65 |-> gr_2,  c66 |-> gr_2,
+	c67 |-> gr_2,  c68 |-> gr_2,  c69 |-> gr_2,  c70 |-> gr_2,  c71 |-> gr_2,  c72 |-> gr_2, 
+
+		c73 |-> gr_3, c74 |-> gr_3, c75 |-> gr_3, c76 |-> gr_3,  c77 |-> gr_3,  c78 |-> gr_3,
+	c79 |-> gr_3,  c80 |-> gr_3,  c81 |-> gr_3,  c82 |-> gr_3,  c83 |-> gr_3,  c84 |-> gr_3, 
+
+		c85 |-> gr_4, c86 |-> gr_4, c87 |-> gr_4, c88 |-> gr_4,  c89 |-> gr_4,  c90 |-> gr_4,
+	c91 |-> gr_4,  c92 |-> gr_4,  c93 |-> gr_4,  c94 |-> gr_4,  c95 |-> gr_4,  c96 |-> gr_4, 
+
+	c97 |-> scsc, c98 |-> scsc, c99 |-> scsc, c100 |-> scsc,  c101 |-> scsc,  c102 |-> scsc,
+	c103 |-> scsc,  c104 |-> scsc,  c105 |-> scsc,  c106 |-> scsc,  c107 |-> scsc,  c108 |-> scsc, 
+
+	c109 |-> a_scale, c110 |-> a_scale, c111 |-> a_scale, c112 |-> a_scale,  c113 |-> a_scale,  c114 |-> a_scale,
+	c115 |-> a_scale,  c116 |-> a_scale,  c117 |-> a_scale,  c118 |-> a_scale,  c119 |-> a_scale,  c120 |-> a_scale
+
+
+
+%( spec BLEND_Vc1_e = combine 1b_e, 1c_e )%
+
+%( compute colimit and then identify predicates )%
+
+
+spec BLEND_Vc1_e =
+sorts SortPSch
+op scale : SortPSch -> SortPSch
+op scsc : SortPSch
+pred __backLL__ : SortPSch * SortPSch
+pred __backLP__ : SortPSch * SortPSch
+pred __backPP__ : SortPSch * SortPSch
+pred __frontLL__ : SortPSch * SortPSch
+pred __frontLP__ : SortPSch * SortPSch
+pred __frontPP__ : SortPSch * SortPSch
+pred __leftBackLL__ : SortPSch * SortPSch
+pred __leftBackLP__ : SortPSch * SortPSch
+pred __leftBackPP__ : SortPSch * SortPSch
+pred __leftFrontLL__ : SortPSch * SortPSch
+pred __leftFrontLP__ : SortPSch * SortPSch
+pred __leftFrontPP__ : SortPSch * SortPSch
+pred __leftLL__ : SortPSch * SortPSch
+pred __leftLP__ : SortPSch * SortPSch
+pred __leftPP__ : SortPSch * SortPSch
+pred __rightBackLL__ : SortPSch * SortPSch
+pred __rightBackLP__ : SortPSch * SortPSch
+pred __rightBackPP__ : SortPSch * SortPSch
+pred __rightFrontLL__ : SortPSch * SortPSch
+pred __rightFrontLP__ : SortPSch * SortPSch
+pred __rightFrontPP__ : SortPSch * SortPSch
+pred __rightLL__ : SortPSch * SortPSch
+pred __rightLP__ : SortPSch * SortPSch
+pred __rightPP__ : SortPSch * SortPSch
+pred inScale : SortPSch * SortPSch
+pred intersectLL : SortPSch * SortPSch
+pred intersectLP : SortPSch * SortPSch
+pred intersectPP : SortPSch * SortPSch
+pred less : SortPSch * SortPSch
+pred more : SortPSch * SortPSch
+. scsc rightBackPP scsc %(Ax1)%
+. scsc frontPP scsc %(Ax10)%
+. intersectLP(scsc, scsc) %(Ax11)%
+. scsc leftFrontPP scsc %(Ax18)%
+. scsc leftBackPP scsc %(Ax27)%
+. scsc rightFrontPP scsc %(Ax28)%
+. scsc backPP scsc %(Ax39)%
+. scsc rightPP scsc %(Ax43)%
+. intersectLL(scsc, scsc) %(Ax75)%
+forall c : SortPSch . exists! sc : SortPSch . scale(sc) = c
+                       %(scales are always part of a unique SCALARITY schema)%
+forall s : SortPSch; x, y : SortPSch
+. inScale(x, scale(s)) /\ inScale(y, scale(s)) /\ not x = y
+     => more(x, y) \/ more(y, x)                                                 %(Ax2_81)%
+forall x, y : SortPSch
+. more(x, y)
+     => exists! sc : SortPSch
+                 . inScale(x, scale(sc)) /\ inScale(y, scale(sc))
+                                                                                                                 %(Ax3_82)%
+forall x, y : SortPSch . less(x, y) <=> more(y, x) %(Ax4_83)%
+forall x : SortPSch . not more(x, x) %(irreflexive)%
+forall x, y, z : SortPSch
+. more(x, y) /\ more(y, z) => more(x, z)                   %(transitive)%
+forall x, y : SortPSch . more(x, y) => not more(y, x)
+                                                                                                           %(asymmetry)%
+. scale(scsc) = scsc %(Ax8_84)%
+. inScale(scsc, scsc) %(Ax10_77)%
+. more(scsc, scsc) %(Ax13_79)%
+
+
+
+spec GENERIC_2_e = 
+
+sort Sort
+
+preds
+
+pred1,  pred2,  pred3,  pred4,  pred5,  pred6,  pred7,  pred8,  pred9,  pred10,
+pred11, pred12, pred13, pred14,         pred16, pred17, pred18, pred19, pred20,
+pred21, pred22, pred23, pred24, pred25, pred26, pred27, pred28, pred29, pred30,
+pred31, pred32, pred33, pred34, pred35, pred36, pred37, pred38, pred39, pred40,
+pred41,         pred43, pred44, pred45, pred46, pred47, pred48, pred49, pred50,
+pred51, pred52, pred53, pred54, pred55, pred56, pred57, pred58, pred59, pred60,
+pred61, pred62, pred63, pred64, pred65, pred66, pred67, pred68,         pred70,
+pred71, pred72, pred73, pred74, pred75, pred76, pred77, pred78, pred79, pred80,
+pred81 : Sort * Sort
+
+
+view 2b_e : GENERIC_2_e to BLEND_Vc1_e = 
+Sort |-> SortPSch,
+pred1 |-> __backLL__, pred2 |-> __backLP__,
+pred3 |-> __backPP__, pred4 |-> __frontLL__,
+pred5 |-> __frontLP__, pred6 |-> __frontPP__,
+pred7 |-> __leftBackLL__, pred8 |-> __leftBackLP__,
+pred9 |-> __leftBackPP__, pred10 |-> __leftFrontLL__,
+pred11 |-> __leftFrontLP__, pred12 |-> __leftFrontPP__,
+pred13 |-> __leftLL__, pred14 |-> __leftLP__, 
+pred16 |-> __rightBackLL__,
+pred17 |-> __rightBackLP__, pred18 |-> __rightBackPP__,
+pred19 |-> __rightFrontLL__, pred20 |-> __rightFrontLP__,
+pred21 |-> __rightFrontPP__, pred22 |-> __rightLL__,
+pred23 |-> __rightLP__, pred24 |-> __rightPP__,
+pred25 |-> intersectLL, pred26 |-> intersectLP, pred27 |-> intersectPP,
+pred28 |-> __backLL__, pred29 |-> __backLP__,
+pred30 |-> __backPP__, pred31 |-> __frontLL__,
+pred32 |-> __frontLP__, pred33 |-> __frontPP__,
+pred34 |-> __leftBackLL__, pred35 |-> __leftBackLP__,
+pred36 |-> __leftBackPP__, pred37 |-> __leftFrontLL__,
+pred38 |-> __leftFrontLP__, pred39 |-> __leftFrontPP__,
+pred40 |-> __leftLL__, pred41 |-> __leftLP__, 
+pred43 |-> __rightBackLL__,
+pred44 |-> __rightBackLP__, pred45 |-> __rightBackPP__,
+pred46 |-> __rightFrontLL__, pred47 |-> __rightFrontLP__,
+pred48 |-> __rightFrontPP__, pred49 |-> __rightLL__,
+pred50 |-> __rightLP__, pred51 |-> __rightPP__,
+pred52 |-> intersectLL, pred53 |-> intersectLP, pred54 |-> intersectPP,
+pred55 |-> __backLL__, pred56 |-> __backLP__,
+pred57 |-> __backPP__, pred58 |-> __frontLL__,
+pred59 |-> __frontLP__, pred60 |-> __frontPP__,
+pred61 |-> __leftBackLL__, pred62 |-> __leftBackLP__,
+pred63 |-> __leftBackPP__, pred64 |-> __leftFrontLL__,
+pred65 |-> __leftFrontLP__, pred66 |-> __leftFrontPP__,
+pred67 |-> __leftLL__, pred68 |-> __leftLP__, 
+pred70 |-> __rightBackLL__,
+pred71 |-> __rightBackLP__, pred72 |-> __rightBackPP__,
+pred73 |-> __rightFrontLL__, pred74 |-> __rightFrontLP__,
+pred75 |-> __rightFrontPP__, pred76 |-> __rightLL__,
+pred77 |-> __rightLP__, pred78 |-> __rightPP__,
+pred79 |-> intersectLL, pred80 |-> intersectLP, pred81 |-> intersectPP
+
+
+%error%
+
+view 2c_e : GENERIC_2_e to BLEND_Vc1_e = 
+Sort |-> SortPSch,
+pred1 |-> inScale, pred2 |-> inScale,
+pred3 |-> inScale, pred4 |-> inScale,
+pred5 |-> inScale, pred6 |-> inScale,
+pred7 |-> inScale, pred8 |-> inScale,
+pred9 |-> inScale, pred10 |-> inScale,
+pred11 |-> inScale, pred12 |-> inScale,
+pred13 |-> inScale, pred14 |-> inScale, 
+                    pred16 |-> inScale,
+pred17 |-> inScale, pred18 |-> inScale,
+pred19 |-> inScale, pred20 |-> inScale,
+pred21 |-> inScale, pred22 |-> inScale,
+pred23 |-> inScale, pred24 |-> inScale,
+pred25 |-> inScale, pred26 |-> inScale, pred27 |-> inScale,
+pred28 |-> more, pred29 |-> more,
+pred30 |-> more, pred31 |-> more,
+pred32 |-> more, pred33 |-> more,
+pred34 |-> more, pred35 |-> more,
+pred36 |-> more, pred37 |-> more,
+pred38 |-> more, pred39 |-> more,
+pred40 |-> more, pred41 |-> more, 
+                 pred43 |-> more,
+pred44 |-> more, pred45 |-> more,
+pred46 |-> more, pred47 |-> more,
+pred48 |-> more, pred49 |-> more,
+pred50 |-> more, pred51 |-> more, 
+pred52 |-> more, pred53 |-> more, pred54 |-> more,
+pred55 |-> less, pred56 |-> less,
+pred57 |-> less, pred58 |-> less,
+pred59 |-> less, pred60 |-> less,
+pred61 |-> less, pred62 |-> less,
+pred63 |-> less, pred64 |-> less,
+pred65 |-> less, pred66 |-> less,
+pred67 |-> less, pred68 |-> less, 
+                 pred70 |-> less,
+pred71 |-> less, pred72 |-> less,
+pred73 |-> less, pred74 |-> less,
+pred75 |-> less, pred76 |-> less,
+pred77 |-> less, pred78 |-> less,
+pred79 |-> less, pred80 |-> less, pred81 |-> less
+
+
+
+%( spec BLEND_Vc_e = combine 2b_e, 2c_e )%
+
+
+
+spec BLEND_Vc_e =
+sorts Sort
+op scale : Sort -> Sort
+op scsc : Sort
+pred __leftPP__ : Sort * Sort
+pred pred9 : Sort * Sort
+. pred9(scsc, scsc) %(Ax1)%
+forall c : Sort . exists! sc : Sort . scale(sc) = c
+                       %(scales are always part of a unique SCALARITY schema)%
+forall s, x, y : Sort
+. pred9(x, scale(s)) /\ pred9(y, scale(s)) /\ not x = y
+     => pred9(x, y) \/ pred9(y, x)                                             %(Ax2_81)%
+forall x, y : Sort
+. pred9(x, y)
+     => exists! sc : Sort
+                 . pred9(x, scale(sc)) /\ pred9(y, scale(sc))         %(Ax3_82)%
+forall x, y : Sort . pred9(x, y) <=> pred9(y, x) %(Ax4_83)%
+forall x : Sort . not pred9(x, x) %(irreflexive)%
+forall x, y, z : Sort
+. pred9(x, y) /\ pred9(y, z) => pred9(x, z)             %(transitive)%
+forall x, y : Sort . pred9(x, y) => not pred9(y, x)
+                                                                                                           %(asymmetry)%
+. scale(scsc) = scsc %(Ax8_84)%
+
+
+
+
