@@ -1,5 +1,9 @@
 
-%( GENERIC AND INPUT SPACES INTEGRATION )%
+%( Here are the specifications of the input spaces 
+and generic spaces needed to compute a blend that
+has the same input spaces as blend1 and
+maximizes the governing principle of INTEGRATION )%
+
 
 
 spec J_e =
@@ -128,6 +132,24 @@ view GeI : G_e to I_e =
 
 
 
-spec BLEND_Ve = combine GeJ, GeI
+%( spec BLEND_Ve = combine GeJ, GeI )%
 
-
+spec BLEND_Ve = 
+sorts Degree
+op gr_1 : Degree
+op gr_2 : Degree
+op gr_3 : Degree
+op gr_4 : Degree
+pred more : Degree * Degree
+forall x : Degree . not more(x, x) %(irreflexive)%
+forall x, y, z : Degree . more(x, y) /\ more(y, z) => more(x, z)
+                                                                                                         %(transitive)%
+forall x, y : Degree . more(x, y) => not more(y, x)
+                                                                                                           %(asymmetry)%
+. more(gr_3, gr_2) %(Ax5)%
+. more(gr_4, gr_2) %(Ax1)%
+. more(gr_4, gr_1) %(Ax4_7)%
+. more(gr_3, gr_1) %(Ax10)%
+. more(gr_4, gr_3) %(Ax12)%
+. more(gr_2, gr_3) %(Ax13)%
+. more(gr_2, gr_1) %(Ax15)%

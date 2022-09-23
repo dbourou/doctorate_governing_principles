@@ -1,4 +1,9 @@
-%( INPUTS AND GENERIC SPACES UNPACKING )%
+
+%( Here are the specifications of the input spaces 
+and generic spaces needed to compute a blend that
+has the same input spaces as blend1 and
+maximizes the governing principle of UNPACKING )%
+
 
 
 spec I = 
@@ -169,3 +174,168 @@ end
 %( just compute colimit of I and J, no views, empty generic space )%
 
 
+spec BLEND = 
+sorts Grade, Line, Point, Scale, ScaleSchema
+op a_scale : Scale
+op c_1 : Point
+op c_2 : Point
+op c_3 : Point
+op c_4 : Point
+op c_5 : Point
+op c_6 : Point
+op c_7 : Point
+op c_8 : Point
+op gr_1 : Grade
+op gr_2 : Grade
+op gr_3 : Grade
+op gr_4 : Grade
+op r_21 : Line
+op r_31 : Line
+op r_41 : Line
+op r_52 : Line
+op r_53 : Line
+op r_62 : Line
+op r_64 : Line
+op r_73 : Line
+op r_74 : Line
+op r_85 : Line
+op r_86 : Line
+op r_87 : Line
+op scale : ScaleSchema -> Scale
+op scsc : ScaleSchema
+pred __backLL__ : Line * Line
+pred __backLP__ : Line * Point
+pred __backPP__ : Point * Point
+pred __frontLL__ : Line * Line
+pred __frontLP__ : Line * Point
+pred __frontPP__ : Point * Point
+pred __leftBackLL__ : Line * Line
+pred __leftBackLP__ : Line * Point
+pred __leftBackPP__ : Point * Point
+pred __leftFrontLL__ : Line * Line
+pred __leftFrontLP__ : Line * Point
+pred __leftFrontPP__ : Point * Point
+pred __leftLL__ : Line * Line
+pred __leftLP__ : Line * Point
+pred __leftPP__ : Point * Point
+pred __rightBackLL__ : Line * Line
+pred __rightBackLP__ : Line * Point
+pred __rightBackPP__ : Point * Point
+pred __rightFrontLL__ : Line * Line
+pred __rightFrontLP__ : Line * Point
+pred __rightFrontPP__ : Point * Point
+pred __rightLL__ : Line * Line
+pred __rightLP__ : Line * Point
+pred __rightPP__ : Point * Point
+pred inScale : Grade * Scale
+pred intersectLL : Line * Line
+pred intersectLP : Line * Point
+pred intersectPP : Point * Point
+pred less : Grade * Grade
+pred more : Grade * Grade
+forall c : Scale . exists! sc : ScaleSchema . scale(sc) = c
+                       %(scales are always part of a unique SCALARITY schema)%
+forall s : ScaleSchema; x, y : Grade
+. inScale(x, scale(s)) /\ inScale(y, scale(s)) /\ not x = y
+     => more(x, y) \/ more(y, x)                                                       %(Ax2)%
+forall x, y : Grade
+. more(x, y)
+     => exists! sc : ScaleSchema
+                 . inScale(x, scale(sc)) /\ inScale(y, scale(sc))       %(Ax3)%
+forall x, y : Grade . less(x, y) <=> more(y, x) %(Ax4)%
+forall x : Grade . not more(x, x) %(irreflexive)%
+forall x, y, z : Grade . more(x, y) /\ more(y, z) => more(x, z)
+                                                                                                         %(transitive)%
+forall x, y : Grade . more(x, y) => not more(y, x) %(asymmetry)%
+. scale(scsc) = a_scale %(Ax8)%
+. inScale(gr_1, a_scale) %(Ax9)%
+. inScale(gr_2, a_scale) %(Ax10)%
+. inScale(gr_3, a_scale) %(Ax11)%
+. inScale(gr_4, a_scale)
+%(declare that the four instantiated Grades are in the instantiated ScaleSchema)%
+. more(gr_4, gr_3) %(Ax13)%
+. more(gr_3, gr_2) %(Ax14)%
+. more(gr_2, gr_1)
+                                             %(declare which Grade is "more" than which)%
+. c_1 rightBackPP c_2 %(Ax1)%
+. c_2 leftFrontPP c_1 %(Ax2_20)%
+. c_1 rightBackPP c_5 %(Ax3_21)%
+. c_5 leftFrontPP c_1 %(Ax4_22)%
+. c_5 leftBackPP c_8 %(Ax5)%
+. c_8 rightFrontPP c_5 %(Ax6)%
+. c_1 backPP c_8 %(Ax7)%
+. c_8 frontPP c_1 %(Ax8_23)%
+. c_2 backPP c_5 %(Ax9_24)%
+. c_5 frontPP c_2 %(Ax10_16)%
+. intersectLP(r_21, c_1) %(Ax11_17)%
+. intersectLP(r_21, c_2) %(Ax12)%
+. intersectLP(r_52, c_2) %(Ax13_18)%
+. intersectLP(r_52, c_5) %(Ax14_19)%
+. intersectLP(r_85, c_5) %(Ax15)%
+. intersectLP(r_85, c_8) %(Ax16)%
+. c_3 rightBackPP c_5 %(Ax17)%
+. c_5 leftFrontPP c_3 %(Ax18)%
+. c_4 rightBackPP c_5 %(Ax19)%
+. c_5 leftFrontPP c_4 %(Ax20)%
+. c_4 rightBackPP c_6 %(Ax21)%
+. c_6 leftFrontPP c_4 %(Ax22)%
+. c_4 rightBackPP c_8 %(Ax23)%
+. c_8 leftFrontPP c_4 %(Ax24)%
+. c_7 rightBackPP c_8 %(Ax25)%
+. c_8 leftFrontPP c_7 %(Ax26)%
+. c_1 leftBackPP c_4 %(Ax27)%
+. c_4 rightFrontPP c_1 %(Ax28)%
+. c_1 leftBackPP c_7 %(Ax29)%
+. c_7 rightFrontPP c_1 %(Ax30)%
+. c_2 leftBackPP c_6 %(Ax31)%
+. c_6 rightFrontPP c_2 %(Ax32)%
+. c_2 leftBackPP c_7 %(Ax33)%
+. c_7 rightFrontPP c_2 %(Ax34)%
+. c_2 leftBackPP c_8 %(Ax35)%
+. c_8 rightFrontPP c_2 %(Ax36)%
+. c_3 leftBackPP c_7 %(Ax37)%
+. c_7 rightFrontPP c_3 %(Ax38)%
+. c_1 backPP c_3 %(Ax39)%
+. c_3 frontPP c_1 %(Ax40)%
+. c_1 backPP c_6 %(Ax41)%
+. c_6 frontPP c_1 %(Ax42)%
+. c_2 leftPP c_3 %(Ax43)%
+. c_3 rightPP c_2 %(Ax44)%
+. c_2 leftPP c_4 %(Ax45)%
+. c_4 rightPP c_2 %(Ax46)%
+. c_3 leftPP c_4 %(Ax47)%
+. c_4 rightPP c_3 %(Ax48)%
+. c_3 backPP c_6 %(Ax49)%
+. c_6 frontPP c_3 %(Ax50)%
+. c_5 leftPP c_6 %(Ax51)%
+. c_6 rightPP c_5 %(Ax52)%
+. c_3 backPP c_8 %(Ax53)%
+. c_8 frontPP c_3 %(Ax54)%
+. c_5 leftPP c_7 %(Ax55)%
+. c_7 rightPP c_5 %(Ax56)%
+. c_4 backPP c_7 %(Ax57)%
+. c_7 frontPP c_4 %(Ax58)%
+. c_6 leftPP c_7 %(Ax59)%
+. c_7 rightPP c_6 %(Ax60)%
+. c_6 backPP c_8 %(Ax61)%
+. c_8 frontPP c_6 %(Ax62)%
+. intersectLP(r_31, c_1) %(Ax63)%
+. intersectLP(r_31, c_3) %(Ax64)%
+. intersectLP(r_41, c_1) %(Ax65)%
+. intersectLP(r_41, c_4) %(Ax66)%
+. intersectLP(r_53, c_3) %(Ax67)%
+. intersectLP(r_53, c_5) %(Ax68)%
+. intersectLP(r_62, c_2) %(Ax69)%
+. intersectLP(r_62, c_6) %(Ax70)%
+. intersectLP(r_64, c_4) %(Ax71)%
+. intersectLP(r_64, c_6) %(Ax72)%
+. intersectLP(r_73, c_3) %(Ax73)%
+. intersectLP(r_73, c_7) %(Ax74)%
+. intersectLP(r_74, c_4) %(Ax75)%
+. intersectLP(r_74, c_7) %(Ax76)%
+. intersectLP(r_86, c_6) %(Ax77)%
+. intersectLP(r_86, c_8) %(Ax78)%
+. intersectLP(r_87, c_7) %(Ax79)%
+. intersectLP(r_87, c_8) %(Ax80)%
+. intersectLL(r_53, r_62) %(Ax81)%
+. intersectLL(r_64, r_73) %(Ax82)%

@@ -1,5 +1,16 @@
 
-%(INPUTS AND GENERIC SPACES COMPRESSION)%
+%( Here are the specifications of the input spaces 
+and generic spaces needed to compute a blend that
+has the same input spaces as blend1 and
+maximizes the governing principle of COMPRESSION )%
+
+%( this particular blend has a peculiarity,
+that we cant compute it in one step;
+first we must set up views that identify all
+sorts and constants, compute this colimit,
+and then identify all predicates with each other.
+Thus, the colimit is computed in two steps and the 
+final one is found in line 461 )%
 
 
 spec I = 
@@ -276,7 +287,69 @@ SortLSc |-> Scale,
 
 %( compute colimit and then identify predicates )%
 
-
+spec BLEND_Vc1 =
+sorts SortPSch
+op scale : SortPSch -> SortPSch
+op scsc : SortPSch
+pred __backLL__ : SortPSch * SortPSch
+pred __backLP__ : SortPSch * SortPSch
+pred __backPP__ : SortPSch * SortPSch
+pred __frontLL__ : SortPSch * SortPSch
+pred __frontLP__ : SortPSch * SortPSch
+pred __frontPP__ : SortPSch * SortPSch
+pred __leftBackLL__ : SortPSch * SortPSch
+pred __leftBackLP__ : SortPSch * SortPSch
+pred __leftBackPP__ : SortPSch * SortPSch
+pred __leftFrontLL__ : SortPSch * SortPSch
+pred __leftFrontLP__ : SortPSch * SortPSch
+pred __leftFrontPP__ : SortPSch * SortPSch
+pred __leftLL__ : SortPSch * SortPSch
+pred __leftLP__ : SortPSch * SortPSch
+pred __leftPP__ : SortPSch * SortPSch
+pred __rightBackLL__ : SortPSch * SortPSch
+pred __rightBackLP__ : SortPSch * SortPSch
+pred __rightBackPP__ : SortPSch * SortPSch
+pred __rightFrontLL__ : SortPSch * SortPSch
+pred __rightFrontLP__ : SortPSch * SortPSch
+pred __rightFrontPP__ : SortPSch * SortPSch
+pred __rightLL__ : SortPSch * SortPSch
+pred __rightLP__ : SortPSch * SortPSch
+pred __rightPP__ : SortPSch * SortPSch
+pred inScale : SortPSch * SortPSch
+pred intersectLL : SortPSch * SortPSch
+pred intersectLP : SortPSch * SortPSch
+pred intersectPP : SortPSch * SortPSch
+pred less : SortPSch * SortPSch
+pred more : SortPSch * SortPSch
+. scsc rightBackPP scsc %(Ax1)%
+. scsc frontPP scsc %(Ax10)%
+. intersectLP(scsc, scsc) %(Ax11)%
+. scsc leftFrontPP scsc %(Ax18)%
+. scsc leftBackPP scsc %(Ax27)%
+. scsc rightFrontPP scsc %(Ax28)%
+. scsc backPP scsc %(Ax39)%
+. scsc leftPP scsc %(Ax43)%
+. scsc rightPP scsc %(Ax44)%
+. intersectLL(scsc, scsc) %(Ax81)%
+forall c : SortPSch . exists! sc : SortPSch . scale(sc) = c
+                       %(scales are always part of a unique SCALARITY schema)%
+forall s : SortPSch; x, y : SortPSch
+. inScale(x, scale(s)) /\ inScale(y, scale(s)) /\ not x = y
+     => more(x, y) \/ more(y, x)                                                 %(Ax2_87)%
+forall x, y : SortPSch
+. more(x, y)
+     => exists! sc : SortPSch
+                 . inScale(x, scale(sc)) /\ inScale(y, scale(sc))
+                                                                                                                 %(Ax3_88)%
+forall x, y : SortPSch . less(x, y) <=> more(y, x) %(Ax4_89)%
+forall x : SortPSch . not more(x, x) %(irreflexive)%
+forall x, y, z : SortPSch
+. more(x, y) /\ more(y, z) => more(x, z)                   %(transitive)%
+forall x, y : SortPSch . more(x, y) => not more(y, x)
+                                                                                                           %(asymmetry)%
+. scale(scsc) = scsc %(Ax8_90)%
+. inScale(scsc, scsc) %(Ax10_83)%
+. more(scsc, scsc) %(Ax13_85)%
 
 
 spec GENERIC_2 = 
@@ -339,8 +412,6 @@ pred77 |-> __rightLP__, pred78 |-> __rightPP__,
 pred79 |-> intersectLL, pred80 |-> intersectLP, pred81 |-> intersectPP
 
 
-%error%
-
 view 2c : GENERIC_2 to BLEND_Vc1 = 
 Sort |-> SortPSch,
 pred1 |-> inScale, pred2 |-> inScale,
@@ -385,6 +456,31 @@ pred79 |-> less, pred80 |-> less, pred81 |-> less
 
 
 
-spec BLEND_Vc = combine 2b, 2c
+%( spec BLEND_Vc = combine 2b, 2c )%
+
+spec BLEND_Vc =
+sorts Sort
+op scale : Sort -> Sort
+op scsc : Sort
+pred pred9 : Sort * Sort
+. pred9(scsc, scsc) %(Ax1)%
+forall c : Sort . exists! sc : Sort . scale(sc) = c
+                       %(scales are always part of a unique SCALARITY schema)%
+forall s, x, y : Sort
+. pred9(x, scale(s)) /\ pred9(y, scale(s)) /\ not x = y
+     => pred9(x, y) \/ pred9(y, x)                                             %(Ax2_87)%
+forall x, y : Sort
+. pred9(x, y)
+     => exists! sc : Sort
+                 . pred9(x, scale(sc)) /\ pred9(y, scale(sc))         %(Ax3_88)%
+forall x, y : Sort . pred9(x, y) <=> pred9(y, x) %(Ax4_89)%
+forall x : Sort . not pred9(x, x) %(irreflexive)%
+forall x, y, z : Sort
+. pred9(x, y) /\ pred9(y, z) => pred9(x, z)             %(transitive)%
+forall x, y : Sort . pred9(x, y) => not pred9(y, x)
+                                                                                                           %(asymmetry)%
+. scale(scsc) = scsc %(Ax8_90)%
+
+
 
 

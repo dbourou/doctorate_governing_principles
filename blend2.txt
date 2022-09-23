@@ -1,3 +1,11 @@
+%( The span V models a blend between I and J, without any generalization,
+which creates outer-space relations between all sorts,
+all constants, and all predicates.
+The generalized span has I_0 which generalizes from the geometry
+predicates leftPP and rightPP.
+This blend is intended to have high Compression, and to generalise
+the input spaces much less, than blend1. )%
+
 
 
 %( SPAN V0 )%
